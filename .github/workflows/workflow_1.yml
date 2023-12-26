@@ -51,8 +51,15 @@ jobs:
       - name: Display preinstalled tools location
         run: echo "The preinstalled tools are located here on the runner ${{runner.tool_cache}}."
 
-      - name: List files in tool cache
+      - name: List files in the tool cache
         run: ls ${{runner.tool_cache}}
 
       - name: Display job status
         run: echo "This job's status is ${{job.status}}."
+  Second-Job-Workflow:
+    name: Testing another job workflow
+    runs-on: ubuntu-latest
+    needs: Github-Actions-JobDemo-1
+
+    steps:
+      - run: echo "Testing to see what errors I made the first time"
