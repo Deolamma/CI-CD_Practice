@@ -1,5 +1,8 @@
 name: GITHUB ACTION DEMO
-on: push
+on:
+  push:
+    branches:
+      - main
 jobs:
   Github-Actions-JobDemo-1:
     name: Exploring-Github-Actions
