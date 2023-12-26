@@ -1,53 +1,58 @@
 name: GITHUB ACTION DEMO
+
 on:
   push:
     branches:
       - main
+
 jobs:
   Github-Actions-JobDemo-1:
     name: Exploring-Github-Actions
     runs-on: ubuntu-latest
+
     steps:
-      # Display the event that triggered the workflow
-      - run: echo "This job was triggered by a ${{github.event_name}} event"
+      - name: Display the event that triggered the workflow
+        run: echo "This job was triggered by a ${{github.event_name}} event"
 
-      # Display runner info
-      - run: echo "It is running on a(n) ${{runner.os}} server hosted by Github"
+      - name: Display runner info
+        run: echo "It is running on a(n) ${{runner.os}} server hosted by Github"
 
-      # Info about the repository and branch
-      - run: echo "The name of your branch is ${{github.ref}} and your repository is ${{github.repository}}"
+      - name: Info about the repository and branch
+        run: |
+          echo "The name of your branch is ${{github.ref}} and your repository is ${{github.repository}}"
+          echo "The event that triggered the workflow is ${{github.event_name}}"
 
-      # Use in-built github actions
-      - name: checkout_repository_code
+      - name: Use in-built GitHub actions
         uses: actions/checkout@v2
-      - run: echo "the github repository ${{github.repository}} has been cloned to the runner"
-      - run: echo "Your repository has been copied to the path ${{github.workspace}} on the runner"
-      - run: echo "The workflow is now ready to test your code on the runner"
-      
-      - name: Testing_conditional_events
-        if: ${{github.event_name == 'pull_request"}}
+        with:
+          fetch-depth: 0  # Fetch all history for PRs
+
+      - name: Display repository information
+        run: |
+          echo "The GitHub repository ${{github.repository}} has been cloned to the runner"
+          echo "Your repository has been copied to the path ${{github.workspace}} on the runner"
+          echo "The workflow is now ready to test your code on the runner"
+
+      - name: Testing conditional events
+        if: ${{github.event_name == 'pull_request'}}
         run: echo "This event is a pull request"
 
-      - name: List_files_in the repository
-      - run: |
-          ls ${{github workspaces}}
+      - name: List files in the repository
+        run: ls ${{github.workspace}}
 
-      - name: setup dotnet on runner
+      - name: Setup .NET on runner
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.x'
-          
-      - name: diplay dotnet version
+
+      - name: Display .NET version
         run: dotnet --version
 
-      - run: echo "The preinstalled tools are located here on the runner ${{runner.tool_cache}}."
+      - name: Display preinstalled tools location
+        run: echo "The preinstalled tools are located here on the runner ${{runner.tool_cache}}."
 
       - name: List files in tool cache
-        run: |
-          ls ${{runner.tool_cache}}
-      - run: echo "This job's status is ${{job.status}}."
-        
-          
-        
+        run: ls ${{runner.tool_cache}}
 
-      
+      - name: Display job status
+        run: echo "This job's status is ${{job.status}}."
